@@ -1,0 +1,20 @@
+.updateBalanceForm {
+    display: flex;
+    padding: 1rem 0;
+    justify-content: space-between;
+}
+
+.balance {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.formSection {
+    display: flex;
+    column-gap: 0.5rem;
+    border: none;
+}
+
+.hidden {
+    display: none;
+}

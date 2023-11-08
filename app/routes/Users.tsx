@@ -1,13 +1,12 @@
-import {type MetaFunction, type ActionFunctionArgs} from '@remix-run/node';
-import '../globals.css';
+import {type ActionFunctionArgs, type MetaFunction} from '@remix-run/node';
 import {useFetcher, useLoaderData} from '@remix-run/react';
-import addUserRecord from '../db/addUser';
-import generatePassword from '~/helpers/generatePassword';
-import {useEffect, useRef} from 'react';
-import getUsers from '~/db/getUsers';
-import type {User} from '../domain/User';
+import NewUserForm from '~/components/NewUserForm';
 import UsersTable from '~/components/UsersTable';
-import NewUserFormFields from '~/components/NewUserFormFields';
+import getUsers from '~/db/getUsers';
+import generatePassword from '~/helpers/generatePassword';
+import addUserRecord from '../db/addUser';
+import type {User} from '../domain/User';
+import '../globals.css';
 
 export const meta: MetaFunction = () => {
     return [
@@ -50,23 +49,11 @@ export async function action({request}: ActionFunctionArgs) {
 export default function Users() {
     let users = useLoaderData<User[]>();
     let fetcher = useFetcher();
-    const formRef = useRef<HTMLFormElement>(null);
-
-    useEffect(
-        function () {
-            if (fetcher.state === 'idle') {
-                formRef.current?.reset();
-            }
-        },
-        [fetcher.state]
-    );
 
     return (
         <>
             <UsersTable users={users} />
-            <fetcher.Form method="post" ref={formRef}>
-                <NewUserFormFields fetcherStatus={fetcher.state} />
-            </fetcher.Form>
+            <NewUserForm fetcher={fetcher} />
         </>
     );
 }

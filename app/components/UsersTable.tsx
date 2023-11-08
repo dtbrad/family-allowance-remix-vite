@@ -1,3 +1,4 @@
+import {Link} from '@remix-run/react';
 import type {User} from '../domain/User';
 import styles from './UsersTable.module.css';
 
@@ -18,7 +19,9 @@ export default function UsersTable({users}: {users: User[]}) {
                         ({userId, balance, allowanceAmount, dayPreference}) => (
                             <tr key={userId}>
                                 <td className={styles.usersTableCell}>
-                                    {userId}
+                                    <Link to={`/users/${userId}`}>
+                                        {userId}
+                                    </Link>
                                 </td>
                                 <td className={styles.usersTableCell}>
                                     {balance}

@@ -1,10 +1,5 @@
 import type {Role} from './Role';
-
-export interface Transaction {
-    date: string;
-    amount: number;
-    description: string;
-}
+import type {Transaction} from './Transaction';
 
 export interface User {
     userId: string;

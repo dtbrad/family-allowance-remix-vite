@@ -1,0 +1,34 @@
+.tableSection {
+    height: 500px;
+}
+
+.usersTable {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.usersTableCell {
+    border: 1px solid black;
+    padding: 0.5rem;
+    width: 33%;
+    white-space: nowrap;
+}
+
+.usersTableHeader {
+    background-color: orange;
+}
+
+.pagination {
+    display: flex;
+    margin-top: 1rem;
+    column-gap: 0.5rem;
+    justify-content: center;
+}
+
+.paginationButton {
+    cursor: pointer;
+}
+.currentPage {
+    margin: 0.2rem;
+}
