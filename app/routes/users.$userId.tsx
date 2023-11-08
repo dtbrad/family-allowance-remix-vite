@@ -1,4 +1,4 @@
-import {useFetcher, useLoaderData} from '@remix-run/react';
+import {Link, useFetcher, useLoaderData} from '@remix-run/react';
 import getUser from '~/db/getUser';
 import {Transaction} from '../domain/Transaction';
 import {ActionFunctionArgs, LoaderFunctionArgs} from '@remix-run/node';
@@ -55,6 +55,7 @@ export default function Page() {
 
     return (
         <>
+            <Link to={'/users'}>Back to Users</Link>
             <UpdateBalanceForm
                 fetcher={fetcher}
                 userId={userId}
