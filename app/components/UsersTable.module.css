@@ -1,0 +1,18 @@
+.userList {
+    padding: 1rem;
+}
+
+.usersTable {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.usersTableCell {
+    border: 1px solid black;
+    padding: 0.5rem;
+    width: 100%;
+}
+
+.usersTableHeader {
+    background-color: orange;
+}
