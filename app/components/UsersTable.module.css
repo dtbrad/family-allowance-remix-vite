@@ -1,8 +1,5 @@
-.userList {
-    padding: 1rem;
-}
-
 .usersTable {
+    border: 1px solid black;
     border-collapse: collapse;
     width: 100%;
 }

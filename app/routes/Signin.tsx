@@ -47,6 +47,10 @@ export async function action({request}: ActionFunctionArgs) {
 
     const userFromDb = await getUser(name);
 
+    if (!userFromDb) {
+        return {message: 'failed to authenticate'};
+    }
+
     const passwordsDoMatch = passwordsMatch(
         password,
         userFromDb.passwordDigest
@@ -72,20 +76,22 @@ export async function action({request}: ActionFunctionArgs) {
 }
 
 export async function loader({request}: LoaderFunctionArgs) {
-    let session = await getSession(request.headers.get('cookie'));
+    let {data} = await getSession(request.headers.get('cookie'));
+    const {userInfo} = data;
+    const role = userInfo?.role;
 
-    const data = session.data;
+    if (role === Role.standard) {
+        return redirect('/summary');
+    }
 
-    const accessToken = data.accessToken;
+    if (role === Role.admin) {
+        return redirect('/users');
+    }
 
-    console.log({myAccessToken: accessToken});
-
-    return session.data;
+    return null;
 }
 
 export default function SigninForm() {
-    let data = useLoaderData<typeof loader>();
-
     return (
         <div className={styles.signinPage}>
             <Form className={styles.signinCard} method="post">

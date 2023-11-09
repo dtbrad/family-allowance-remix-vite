@@ -1,5 +1,9 @@
 import {cssBundleHref} from '@remix-run/css-bundle';
-import type {LinksFunction} from '@remix-run/node';
+import {
+    redirect,
+    type ActionFunctionArgs,
+    type LinksFunction
+} from '@remix-run/node';
 import {
     Links,
     LiveReload,
@@ -9,10 +13,21 @@ import {
     ScrollRestoration
 } from '@remix-run/react';
 import './globals.css';
+import {destroySession, getSession} from './session';
 
 export const links: LinksFunction = () => [
     ...(cssBundleHref ? [{rel: 'stylesheet', href: cssBundleHref}] : [])
 ];
+
+export async function action({request}: ActionFunctionArgs) {
+    let session = await getSession(request.headers.get('cookie'));
+
+    return redirect('/signin', {
+        headers: {
+            'Set-Cookie': await destroySession(session)
+        }
+    });
+}
 
 export default function App() {
     return (

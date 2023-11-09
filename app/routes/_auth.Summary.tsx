@@ -56,7 +56,12 @@ export interface UserSummaryDetails {
 }
 
 export default function Page() {
-    const {transactions} = useLoaderData<UserSummaryDetails>();
+    const {transactions, balance} = useLoaderData<UserSummaryDetails>();
 
-    return <UserSummaryTable transactions={transactions} />;
+    return (
+        <>
+            <p>Balance: {balance}</p>
+            <UserSummaryTable transactions={transactions} />
+        </>
+    );
 }
