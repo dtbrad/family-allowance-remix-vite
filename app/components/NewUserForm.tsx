@@ -1,13 +1,10 @@
-import {FetcherWithComponents} from '@remix-run/react';
+import {FetcherWithComponents, useFetcher} from '@remix-run/react';
 import styles from './NewUserForm.module.css';
 import {useEffect, useRef} from 'react';
 
-export default function NewUserFormFields({
-    fetcher
-}: {
-    fetcher: FetcherWithComponents<unknown>;
-}) {
+export default function NewUserFormFields() {
     const formRef = useRef<HTMLFormElement>(null);
+    const fetcher = useFetcher();
 
     useEffect(
         function () {
@@ -17,9 +14,6 @@ export default function NewUserFormFields({
         },
         [fetcher.state]
     );
-
-    // console.log('inside new user form...');
-    // console.log(fetcher.state);
 
     return (
         <fetcher.Form method="post" ref={formRef}>

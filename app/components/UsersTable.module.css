@@ -16,3 +16,11 @@
 .usersTableHeader {
     background-color: orange;
 }
+
+.deleteUser {
+    background: none;
+    color: red;
+    padding-left: 1rem;
+    border: none;
+    cursor: pointer;
+}

@@ -1,6 +1,7 @@
-import {Link} from '@remix-run/react';
+import {Link, useFetcher} from '@remix-run/react';
 import type {User} from '../domain/User';
 import styles from './UsersTable.module.css';
+import UserListItem from './UserListItem';
 
 export default function UsersTable({users}: {users: User[]}) {
     return (
@@ -18,10 +19,10 @@ export default function UsersTable({users}: {users: User[]}) {
                     {users.map(
                         ({userId, balance, allowanceAmount, dayPreference}) => (
                             <tr key={userId}>
-                                <td className={styles.usersTableCell}>
-                                    <Link to={`/users/${userId}`}>
-                                        {userId}
-                                    </Link>
+                                <td
+                                    className={`${styles.usersTableCell} ${styles.nameCell}`}
+                                >
+                                    <UserListItem userId={userId} />
                                 </td>
                                 <td className={styles.usersTableCell}>
                                     {balance}

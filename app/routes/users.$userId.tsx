@@ -1,13 +1,11 @@
-import {Link, useFetcher, useLoaderData} from '@remix-run/react';
-import getUser from '~/db/getUser';
-import {Transaction} from '../domain/Transaction';
 import {ActionFunctionArgs, LoaderFunctionArgs} from '@remix-run/node';
-import getUserTransactions from '~/db/getUserTransactions';
-import UserSummaryTable from '~/components/UserSummaryTable';
-import updateBalance from '~/db/updateBalance';
-import {useEffect, useRef} from 'react';
-import UserBalanceInputs from '~/components/UserBalanceInputs';
+import {Link, useLoaderData} from '@remix-run/react';
 import UpdateBalanceForm from '~/components/UpdateBalanceForm';
+import UserSummaryTable from '~/components/UserSummaryTable';
+import getUser from '~/db/getUser';
+import getUserTransactions from '~/db/getUserTransactions';
+import updateBalance from '~/db/updateBalance';
+import {Transaction} from '../domain/Transaction';
 
 export async function loader({params}: LoaderFunctionArgs) {
     const {userId} = params;
@@ -51,16 +49,11 @@ export interface UserSummaryDetails {
 
 export default function Page() {
     const {transactions, userId, balance} = useLoaderData<UserSummaryDetails>();
-    const fetcher = useFetcher();
 
     return (
         <>
             <Link to={'/users'}>Back to Users</Link>
-            <UpdateBalanceForm
-                fetcher={fetcher}
-                userId={userId}
-                balance={balance}
-            />
+            <UpdateBalanceForm userId={userId} balance={balance} />
             <UserSummaryTable transactions={transactions} />
         </>
     );

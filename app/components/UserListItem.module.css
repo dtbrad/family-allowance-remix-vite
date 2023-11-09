@@ -1,0 +1,14 @@
+.deleteUser {
+    background: none;
+    color: red;
+    padding-left: 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+.userListItem {
+    display: flex;
+    /* border: 1px solid black;
+    padding: 0.5rem;
+    width: 100%; */
+}

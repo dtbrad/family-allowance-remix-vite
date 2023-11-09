@@ -16,8 +16,6 @@ export default async function updateBalance({
     transactionDate = new Date().toISOString(),
     description = 'allowance'
 }: UpdateBalanceParams) {
-    console.log('INSIDE DB OPERATION');
-    console.log({userId, amount, transactionDate, description});
     const params = {
         TransactItems: [
             {

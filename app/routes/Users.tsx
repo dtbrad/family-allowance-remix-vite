@@ -1,5 +1,5 @@
 import {type ActionFunctionArgs, type MetaFunction} from '@remix-run/node';
-import {useFetcher, useLoaderData} from '@remix-run/react';
+import {useLoaderData} from '@remix-run/react';
 import NewUserForm from '~/components/NewUserForm';
 import UsersTable from '~/components/UsersTable';
 import getUsers from '~/db/getUsers';
@@ -7,6 +7,7 @@ import generatePassword from '~/helpers/generatePassword';
 import addUserRecord from '../db/addUser';
 import type {User} from '../domain/User';
 import '../globals.css';
+import deleteUser from '~/db/deleteUser';
 
 export const meta: MetaFunction = () => {
     return [
@@ -21,11 +22,23 @@ export async function loader() {
     return users.map(({passwordDigest, ...user}) => user);
 }
 
-export async function action({request}: ActionFunctionArgs) {
+export async function action({request, params}: ActionFunctionArgs) {
     const formData = await request.formData();
 
-    const {name, password, dayPreference, amount} =
-        Object.fromEntries(formData);
+    const {
+        name,
+        password,
+        dayPreference,
+        amount,
+        formSubmit,
+        userIdForDeletion
+    } = Object.fromEntries(formData);
+
+    if (formSubmit === 'delete') {
+        await deleteUser(userIdForDeletion as string);
+
+        return {message: 'deleted'};
+    }
 
     if (
         typeof name !== 'string' ||
@@ -48,12 +61,11 @@ export async function action({request}: ActionFunctionArgs) {
 
 export default function Users() {
     let users = useLoaderData<User[]>();
-    let fetcher = useFetcher();
 
     return (
         <>
             <UsersTable users={users} />
-            <NewUserForm fetcher={fetcher} />
+            <NewUserForm />
         </>
     );
 }

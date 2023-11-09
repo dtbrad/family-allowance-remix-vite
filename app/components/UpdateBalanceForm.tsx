@@ -1,17 +1,16 @@
-import {FetcherWithComponents} from '@remix-run/react';
+import {FetcherWithComponents, useFetcher} from '@remix-run/react';
 import styles from './UpdateBalanceForm.module.css';
 import {useEffect, useRef} from 'react';
 
 export default function UpdateBalanceForm({
-    fetcher,
     balance,
     userId
 }: {
-    fetcher: FetcherWithComponents<unknown>;
     balance: string;
     userId: string;
 }) {
     const formRef = useRef<HTMLFormElement>(null);
+    const fetcher = useFetcher();
 
     useEffect(
         function () {
