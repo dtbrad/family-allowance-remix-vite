@@ -1,13 +1,19 @@
-import {type ActionFunctionArgs, type MetaFunction} from '@remix-run/node';
+import {
+    type LoaderFunctionArgs,
+    type ActionFunctionArgs,
+    type MetaFunction,
+    redirect
+} from '@remix-run/node';
 import {useLoaderData} from '@remix-run/react';
 import NewUserForm from '~/components/NewUserForm';
 import UsersTable from '~/components/UsersTable';
 import getUsers from '~/db/getUsers';
-import generatePassword from '~/helpers/generatePassword';
+import generatePassword from '~/helpers/generatePassword.server';
 import addUserRecord from '../db/addUser';
 import type {User} from '../domain/User';
-import '../globals.css';
 import deleteUser from '~/db/deleteUser';
+import {getSession} from '~/session';
+import {Role} from '~/domain/Role';
 
 export const meta: MetaFunction = () => {
     return [
@@ -16,7 +22,19 @@ export const meta: MetaFunction = () => {
     ];
 };
 
-export async function loader() {
+export async function loader({request}: LoaderFunctionArgs) {
+    let {data} = await getSession(request.headers.get('cookie'));
+    const {userInfo} = data;
+    const role = userInfo?.role;
+
+    if (role === Role.standard) {
+        return redirect('/summary');
+    }
+
+    if (!role) {
+        return redirect('/signin');
+    }
+
     const users = await getUsers();
 
     return users.map(({passwordDigest, ...user}) => user);

@@ -1,5 +1,4 @@
 import {dynamo} from './dynamo';
-import 'dotenv/config';
 
 const tableName = process.env.TABLE_NAME!;
 

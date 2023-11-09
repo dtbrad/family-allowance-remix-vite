@@ -1,6 +1,5 @@
 import {dynamo} from './dynamo';
-import {User} from '../domain/User';
-import 'dotenv/config';
+import type {User} from '../domain/User';
 
 export default async function getUsers() {
     const result = await dynamo

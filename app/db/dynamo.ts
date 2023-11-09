@@ -1,5 +1,4 @@
 import AWS from 'aws-sdk';
-import 'dotenv/config';
 
 export const dynamo = new AWS.DynamoDB.DocumentClient({
     credentials: {

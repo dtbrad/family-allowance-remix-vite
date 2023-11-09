@@ -9,26 +9,17 @@ import UserSummaryTable from '~/components/UserSummaryTable';
 import getUser from '~/db/getUser';
 import getUserTransactions from '~/db/getUserTransactions';
 import updateBalance from '~/db/updateBalance';
-import type {Transaction} from '../domain/Transaction';
 import {getSession} from '~/session';
-import {Role} from '~/domain/Role';
+import type {Transaction} from '../domain/Transaction';
 
-export async function loader({params, request}: LoaderFunctionArgs) {
+export async function loader({request}: LoaderFunctionArgs) {
     let {data} = await getSession(request.headers.get('cookie'));
     const {userInfo} = data;
     const role = userInfo?.role;
-
-    if (role === Role.standard) {
-        return redirect('/summary');
-    }
+    const userId = userInfo?.userId;
 
     if (!role) {
         return redirect('/signin');
-    }
-    const {userId} = params;
-
-    if (!userId) {
-        throw new Response('Not Found', {status: 404});
     }
 
     const {balance} = await getUser(userId);
@@ -65,13 +56,7 @@ export interface UserSummaryDetails {
 }
 
 export default function Page() {
-    const {transactions, userId, balance} = useLoaderData<UserSummaryDetails>();
+    const {transactions} = useLoaderData<UserSummaryDetails>();
 
-    return (
-        <>
-            <Link to={'/users'}>Back to Users</Link>
-            <UpdateBalanceForm userId={userId} balance={balance} />
-            <UserSummaryTable transactions={transactions} />
-        </>
-    );
+    return <UserSummaryTable transactions={transactions} />;
 }

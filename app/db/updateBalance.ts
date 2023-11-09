@@ -1,5 +1,4 @@
 import {dynamo} from './dynamo';
-import 'dotenv/config';
 
 interface UpdateBalanceParams {
     userId: string;

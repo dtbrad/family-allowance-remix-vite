@@ -1,5 +1,4 @@
 import {createHmac} from 'crypto';
-import 'dotenv/config';
 
 const cryptoSalt = process.env.CRYPTO_SALT;
 
