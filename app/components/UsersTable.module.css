@@ -16,7 +16,7 @@
 
 .deleteUser {
     background: none;
-    color: red;
+    /* color: red; */
     padding-left: 1rem;
     border: none;
     cursor: pointer;
