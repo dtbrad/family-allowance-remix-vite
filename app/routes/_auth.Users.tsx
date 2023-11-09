@@ -41,6 +41,14 @@ export async function loader({request}: LoaderFunctionArgs) {
 }
 
 export async function action({request, params}: ActionFunctionArgs) {
+    let {data} = await getSession(request.headers.get('cookie'));
+    const {userInfo} = data;
+    const role = userInfo?.role;
+
+    if (role !== Role.admin) {
+        throw new Response('Not allowed', {status: 401});
+    }
+
     const formData = await request.formData();
 
     const {

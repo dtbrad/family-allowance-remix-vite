@@ -3,14 +3,14 @@ import {
     type ActionFunctionArgs,
     type LoaderFunctionArgs
 } from '@remix-run/node';
-import {Link, useLoaderData} from '@remix-run/react';
-import UpdateBalanceForm from '~/components/UpdateBalanceForm';
+import {useLoaderData} from '@remix-run/react';
 import UserSummaryTable from '~/components/UserSummaryTable';
 import getUser from '~/db/getUser';
 import getUserTransactions from '~/db/getUserTransactions';
 import updateBalance from '~/db/updateBalance';
+import {Role} from '~/domain/Role';
+import type {Transaction} from '~/domain/Transaction';
 import {getSession} from '~/session';
-import type {Transaction} from '../domain/Transaction';
 
 export async function loader({request}: LoaderFunctionArgs) {
     let {data} = await getSession(request.headers.get('cookie'));
@@ -30,11 +30,19 @@ export async function loader({request}: LoaderFunctionArgs) {
 }
 
 export async function action({request}: ActionFunctionArgs) {
+    let {data} = await getSession(request.headers.get('cookie'));
+    const {userInfo} = data;
+    const role = userInfo?.role;
+
+    if (role !== Role.admin) {
+        throw new Response('Not allowed', {status: 401});
+    }
+
     const formData = await request.formData();
 
-    const data = Object.fromEntries(formData);
+    const formDataEntries = Object.fromEntries(formData);
 
-    const {userId, amount, description} = data;
+    const {userId, amount, description} = formDataEntries;
 
     if (
         typeof userId !== 'string' ||

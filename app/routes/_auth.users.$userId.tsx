@@ -39,11 +39,19 @@ export async function loader({params, request}: LoaderFunctionArgs) {
 }
 
 export async function action({request}: ActionFunctionArgs) {
+    let {data} = await getSession(request.headers.get('cookie'));
+    const {userInfo} = data;
+    const role = userInfo?.role;
+
+    if (role !== Role.admin) {
+        throw new Response('Not allowed', {status: 401});
+    }
+
     const formData = await request.formData();
 
-    const data = Object.fromEntries(formData);
+    const formDataEntries = Object.fromEntries(formData);
 
-    const {userId, amount, description} = data;
+    const {userId, amount, description} = formDataEntries;
 
     if (
         typeof userId !== 'string' ||
